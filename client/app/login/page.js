@@ -1,38 +1,29 @@
 'use client'
 import styled from "styled-components";
 import { LoginButton } from "@/components/LoginButton";
+import log from "./login.css"
 
-const styles = {
-    header: ` flex justify-center items-center flex-nowrap relative`,
+/*const styles = {
+    header: `flex justify-center items-center flex-nowrap relative`,
     nav: `max-w-6xl pt-12 pb-16 flex justify-between items-center flex-nowrap relative`,
     logoWrapper: `w-[700] absolute bottom-[-2] right-[150] z-[-1]`,
     section: `flex align-start min-h-[700] pb-[138] pt-[40] px-[60] relative flex-wrap w-full max-w-1128 mx-auto items-center`,
     hero: `w-full h-1/2 flex flex-col justify-center items-center`,
     h1: `pb-0 w-55% text-5xl font-semibold text-[var(--primary-1)] leading-70`,
-}
+}*/
 
 const Login = (props) => {
   return (
-    <div>
-        <div className={styles.header}>
-      <div className={styles.nav}>
-        <div/>
-        <div>
-          <LoginButton/>
-        </div>
-      </div>
-    </div>
-      <section className={styles.section}>
-        <div className={styles.hero}>
-          <h1 className={styles.h1}>Welcome to your professional community</h1>
-          <a href="/">
-            <div className={styles.logoWrapper}>
-                <img src="/images/login-logo.svg" alt="" />
+      <section>
+        <div className="container">
+            <img src="/images/login-logo.svg" alt="" />
+            <div className="content">
+                <h1>Welcome to your professional community</h1>
+                <LoginButton/>
             </div>
-            </a>
+                <img src="/images/login-hero.svg" alt="" />
         </div>
       </section>
-    </div>
   );
 };
 
@@ -41,13 +32,11 @@ const Section = styled.section`
   display: flex;
   align-content: start;
   min-height: 700px;
-  padding-bottom: 138px;
-  padding-top: 40px;
   padding: 60px 0;
   position: relative;
   flex-wrap: wrap;
   width: 100%;
-  max-width: 1128px;
+  max-width: 1428px;
   align-items: center;
   margin: auto;
 
@@ -60,12 +49,14 @@ const Section = styled.section`
 const Hero = styled.div`
   width: 100%;
   h1 {
-    padding-bottom: 0;
+    position: absolute;
+    top: 0;
     width: 55%;
-    font-size: 56px;
+    font-size: 30px;
     color: #2977c9;
     font-weight: 200;
     line-height: 70px;
+    
     @media (max-width: 768px) {
       text-align: center;
       font-size: 20px;
