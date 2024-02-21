@@ -13,43 +13,15 @@ const routes = [
     component: () => import("../views/auth/signin/Signin.vue"),
     children: [
       {
-        path: "name_info",
+        path: "/name_info",
         component: () => import("../views/auth/signin/SigninNameInfo.vue"),
       },
-      {
-        path: "location_info",
-        component: () => import("../views/auth/signin/SigninLocationInfo.vue"),
-      },
-      {
-        path: "title_info",
-        component: () => import("../views/auth/signin/SigninTitleInfo.vue"),
-      },
     ],
-  },
-  {
-    path: "/signup",
-    name: "Signup",
-    component: () => import("../views/auth/Signup.vue"),
-  },
-  {
-    path: "/profile",
-    name: "Profile",
-    component: () => import("../views/user/Profile.vue"),
   },
   {
     path: "/user/:slug",
     name: "User",
     component: () => import("../views/user/User.vue"),
-  },
-  {
-    path: "/forgot-password",
-    name: "ForgotPassword",
-    component: () => import("../views/auth/ForgotPassword.vue"),
-  },
-  {
-    path: "/reset-password",
-    name: "ResetPassword",
-    component: () => import("../views/auth/ResetPassword.vue"),
   },
   {
     path: "/company/:slug",
@@ -120,9 +92,9 @@ router.beforeEach((to, from, next) => {
 
   // Rules...
   // If he is not logged in and wants to enter the User-related sections... Block and redirect to the Login page.
-  if (!isAuth && authenticatedPages.indexOf(to.name) > -1) return next({ name: "Signup" });
+  if (!isAuth && authenticatedPages.indexOf(to.name) > -1) return next({ name: "Signin" });
 
-  if (isAuth && (to.name === "Signup" || to.name === "Signin"))  return next({ name: "Home" });
+  if (isAuth && (to.name === "Signin"))  return next({ name: "Home" });
 
   next();
 });
