@@ -37,7 +37,7 @@ router.get('/:address', db.getFriends)
  *         schema:
  *           type: object
  *           properties:
- *             friend_id:
+ *             friend_address:
  *               type: string
  *     responses:
  *       '200':

@@ -23,7 +23,7 @@ const db = require('../database.js');
  *         schema:
  *           type: object
  *           properties:
- *             receiver_id:
+ *             receiver_address:
  *               type: string
  *     description: Use to create a new friend request
  *     responses:
@@ -66,7 +66,7 @@ router.get('/:address', db.getFriendsRequests)
  *         schema:
  *           type: object
  *           properties:
- *             sender_id:
+ *             sender_address:
  *               type: string
  *             status:
  *               type: string

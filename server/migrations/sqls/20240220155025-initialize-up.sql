@@ -12,26 +12,31 @@ CREATE TABLE IF NOT EXISTS users (
 );
 
 CREATE TABLE IF NOT EXISTS friends_requests (
-  id SERIAL PRIMARY KEY,
-  sender_id VARCHAR(255) NOT NULL,
-  receiver_id VARCHAR(255) NOT NULL,
+  sender_address VARCHAR(255) NOT NULL,
+  receiver_address VARCHAR(255) NOT NULL,
   status VARCHAR(255) NOT NULL,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT PK_friends_requests PRIMARY KEY (sender_address, receiver_address),
+  FOREIGN KEY (sender_address) REFERENCES users(address),
+  FOREIGN KEY (receiver_address) REFERENCES users(address)
 );
 
 CREATE TABLE IF NOT EXISTS friends (
-  id SERIAL PRIMARY KEY,
-  user_id VARCHAR(255) NOT NULL,
-  friend_id VARCHAR(255) NOT NULL,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  user_address VARCHAR(255) NOT NULL,
+  friend_address VARCHAR(255) NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT PK_friends PRIMARY KEY (user_address, friend_address),
+  FOREIGN KEY (user_address) REFERENCES users(address),
+  FOREIGN KEY (friend_address) REFERENCES users(address)
 );
 
 CREATE TABLE IF NOT EXISTS posts (
   id SERIAL PRIMARY KEY,
   title VARCHAR(255) NOT NULL,
   content TEXT NOT NULL,
-  user_id VARCHAR(255) NOT NULL,
+  user_address VARCHAR(255) NOT NULL,
   is_edited BOOLEAN DEFAULT FALSE,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_address) REFERENCES users(address)
 );

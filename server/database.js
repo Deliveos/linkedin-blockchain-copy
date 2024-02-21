@@ -50,24 +50,24 @@ const deleteUser = async (request, response) => {
 
 const createFriendsRequests = async (request, response) => {
   const address = request.params.address
-  const { receiver_id } = request.body
-  var res = await pool.query('INSERT INTO friends_requests (sender_id, receiver_id, status, created_at) VALUES ($1, $2, $3, NOW()) RETURNING *', [address, receiver_id, 'pending'])
+  const { receiver_address } = request.body
+  var res = await pool.query('INSERT INTO friends_requests (sender_address, receiver_address, status, created_at) VALUES ($1, $2, $3, NOW()) RETURNING *', [address, receiver_address, 'pending'])
   return response.status(201).json(res.rows[0])
 }
 
 const getFriendsRequests = async (request, response) => {
   const address = request.params.address
-  const res = await pool.query('SELECT * FROM friends_requests WHERE receiver_id = $1 AND status = $2', [address, 'pending']);
+  const res = await pool.query('SELECT * FROM friends_requests WHERE receiver_address = $1 AND status = $2', [address, 'pending']);
   return response.status(200).json(res.rows);
 }
 
 const updateFriendRequest = async (request, response) => {
   const address = request.params.address
-  const { sender_id, status } = request.body
-  const res = await pool.query('UPDATE friends_requests SET status = $1 WHERE sender_id = $2 AND receiver_id = $3', [status, sender_id, address])
+  const { sender_address, status } = request.body
+  const res = await pool.query('UPDATE friends_requests SET status = $1 WHERE sender_address = $2 AND receiver_address = $3', [status, sender_address, address])
   if (status === 'accepted') {
-    await pool.query('INSERT INTO friends (user_id, friend_id, created_at) VALUES ($1, $2, NOW())', [sender_id, address])
-    await pool.query('INSERT INTO friends (user_id, friend_id, created_at) VALUES ($1, $2, NOW())', [address, sender_id])
+    await pool.query('INSERT INTO friends (user_address, friend_address, created_at) VALUES ($1, $2, NOW())', [sender_address, address])
+    await pool.query('INSERT INTO friends (user_address, friend_address, created_at) VALUES ($1, $2, NOW())', [address, sender_address])
   }
   if (res.rowCount === 0) {
       return response.status(404).json({message: 'Friend request not found'});
@@ -77,17 +77,17 @@ const updateFriendRequest = async (request, response) => {
 
 const getFriends = async (request, response) => {
   const address = request.params.address
-  const res = await pool.query('SELECT u.* FROM friends RIGHT JOIN users u ON friends.user_id = u.address WHERE u.address = $1', [address]);
+  const res = await pool.query('SELECT u.* FROM friends RIGHT JOIN users u ON friends.user_address = u.address WHERE u.address = $1', [address]);
   return response.status(200).json(res.rows);
 }
 
 const deleteFriend = async (request, response) => {
   const address = request.params.address
-  const { friend_id } = request.body
-  await pool.query('DELETE FROM friends WHERE user_id = $1 AND friend_id = $2', [address, friend_id])
-  await pool.query('DELETE FROM friends WHERE user_id = $1 AND friend_id = $2', [friend_id, address])
-  await pool.query('DELETE FROM friends_requests WHERE sender_id = $1 OR receiver_id = $1 AND sender_id = $2 OR receiver_id = $2', [address, friend_id])
-  console.log('DELETE FROM friends_requests WHERE sender_id = $1 OR receiver_id = $1 AND sender_id = $2 OR receiver_id = $2', [address, friend_id])
+  const { friend_address } = request.body
+  await pool.query('DELETE FROM friends WHERE user_address = $1 AND friend_address = $2', [address, friend_address])
+  await pool.query('DELETE FROM friends WHERE user_address = $1 AND friend_address = $2', [friend_address, address])
+  await pool.query('DELETE FROM friends_requests WHERE sender_address = $1 OR receiver_address = $1 AND sender_address = $2 OR receiver_address = $2', [address, friend_address])
+  console.log('DELETE FROM friends_requests WHERE sender_address = $1 OR receiver_address = $1 AND sender_address = $2 OR receiver_address = $2', [address, friend_address])
   return response.status(200).json({message: 'Friend deleted'});
 }
 
