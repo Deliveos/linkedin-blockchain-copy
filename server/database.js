@@ -77,7 +77,17 @@ const updateFriendRequest = async (request, response) => {
 
 const getFriends = async (request, response) => {
   const address = request.params.address
-  const res = await pool.query('SELECT u.* FROM friends RIGHT JOIN users u ON friends.user_address = u.address WHERE u.address = $1', [address]);
+  const res = await pool.query(`
+  (SELECT sender.* FROM friends_requests fr
+  INNER JOIN users sender ON sender.address = fr.sender_address
+  WHERE fr.receiver_address = $1 AND fr.status = 'accepted')
+  
+  UNION ALL
+  
+  (SELECT receiver.* FROM friends_requests fr
+  INNER JOIN users receiver ON receiver.address = fr.receiver_address
+  WHERE fr.sender_address = $1 AND fr.status = 'accepted')
+  `, [address]);
   return response.status(200).json(res.rows);
 }
 
