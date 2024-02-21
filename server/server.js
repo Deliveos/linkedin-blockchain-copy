@@ -1,21 +1,49 @@
-import express  from 'express';
-import Gun from 'gun';
-import cors from 'cors';
-import { config } from 'dotenv';
+const express = require('express');
+const bodyParser = require('body-parser');
+const swaggerJsDoc = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express');
+const cors = require('cors');
+require('dotenv').config();
+const db = require('./database.js');
 
-config();
 const app = express();
+app.use(bodyParser.json());
 const PORT = process.env.PORT || 9000;
 
 app.use(cors());
-app.use(Gun.serve);
 
+const swaggerOptions = {
+    swaggerDefinition: {
+        info: {
+            title: 'Blockchain backend API',
+            version: '1.0.0',
+            description: 'Blockchain API Information',
+            contact: {
+                name: 'Eduard'
+            },
+            servers: [`http://localhost:${PORT}`]
+        }
+    },
+    apis: [
+        './routes/users.routes.js',
+        './routes/friendsRequests.routes.js',
+        './routes/friends.routes.js'
+    ]
+};
+
+const swaggerDocs = swaggerJsDoc(swaggerOptions);
+app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+
+// Test route
 app.get('/', (_, res) => {
-    res.status(200).json({message: 'Pong', timestamp: new Date().toISOString()});
+    res.status(200).json({ message: 'Pong', timestamp: new Date().toISOString() });
 });
 
-const server = app.listen(PORT, () => {
+app.use('/users', require('./routes/users.routes'));
+app.use('/friends-requests', require('./routes/friendsRequests.routes'));
+app.use('/friends', require('./routes/friends.routes'));
+
+// Start the server
+app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 });
-
-Gun({web: server});
