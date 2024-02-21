@@ -58,7 +58,7 @@ export default {
           state.access_token = null;
           localStorage.removeItem("user");
           localStorage.removeItem("access_token");
-          router.push("/signup");
+          router.push("/signin");
         })
         .catch((err) => {
           localStorage.lastUserName = state?.user?.full_name;
@@ -66,12 +66,12 @@ export default {
           state.access_token = null;
           localStorage.removeItem("user");
           localStorage.removeItem("access_token");
-          router.push("/signup");
+          router.push("/signin");
         });
     },
   },
   actions: {
-    signin({ commit }, pUser) {
+    /*signin({ commit }, pUser) {
       appAxios
         .post("/auth/register", pUser)
         .then((res) => {
@@ -113,7 +113,7 @@ export default {
             });
           }
         });
-    },
+    },*/
     uploadProfilePhoto({ commit }, pUploadedPhoto) {
       const formData = new FormData();
       formData.append("profile_image", pUploadedPhoto);

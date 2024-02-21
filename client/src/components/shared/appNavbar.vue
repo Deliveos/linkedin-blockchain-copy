@@ -11,6 +11,9 @@ const currentUser = computed(() => store.getters['users/getCurrentUser'])
 const profile_image = computed(() => {
     return currentUser?.profile_image ? `${BASE_URL}/uploads/${currentUser?.value?.profile_image}` : `${BASE_URL}/uploads/default.png`
 })
+const logout = () => {
+  store.commit('users/logout')
+}
 const search = (e) => {
     router.push({
         path: "/search",
@@ -26,7 +29,7 @@ const unReadIcon = computed(() => store.getters['userNotifications/showIcon'])
 
 
 const hideNavbar = computed(() => {
-    return !Boolean(currentRoute.value === '/signin' || currentRoute.value === '/signup' || currentRoute.value === '/forgot-password' || currentRoute.value === '/reset-password' || route.currentRoute.value.name==='NotFound')
+    return !Boolean(currentRoute.value === '/signin' || route.currentRoute.value.name==='NotFound')
 })
 const showSettingsCard = ref(false)
 </script>
@@ -43,9 +46,10 @@ const showSettingsCard = ref(false)
                             class="fa-brands hidden md:block fa-linkedin text-3xl md:text-5xl text-primary"></router-link>
                         <!-- /Logo -->
                         <!-- Search Area -->
-                        <div
-                            class="relative bg-slate-100 px-4 py-1 flex items-center  md:hover:w-[350px] w-[250px] rounded-md text-sm h-10 ">
+                      <p @click="logout()" class="px-3 pt-2 text-sm text-start hover:underline text-muted">Sign out</p>
 
+                      <div
+                            class="relative bg-slate-100 px-4 py-1 flex items-center  md:hover:w-[350px] w-[250px] rounded-md text-sm h-10 ">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" data-supported-dps="24x24"
                                 fill="#666667" class="mercado-match absolute left-3 group-hover:fill-black " width="24"
                                 height="24" focusable="false">
@@ -62,7 +66,6 @@ const showSettingsCard = ref(false)
                     <!-- Nav Items -->
 
                     <ul class="flex justify-between items-center ">
-
                         <div
                             class="px-2 md:p-0 md:static flex justify-between items-center fixed z-[1] bottom-0 left-0 right-0 border-t-[1px] bg-white sm:border-none border-t-[rgba(0,0,0,0.2)]">
                             <li class="text-muted">
@@ -180,7 +183,6 @@ const showSettingsCard = ref(false)
                             </svg><small class="text-muted hidden md:block group-hover:text-black">Notifications</small>
                         </router-link>
                         <!-- Profile -->
-
                         <li @click="showSettingsCard = !showSettingsCard"
                             class="flex group flex-col justify-between items-center text-center hover:cursor-pointer group  lg:w-20 lg:border-r-2  border-gray-300 ">
                             <img :src="profile_image || 'default.png'" alt="" class="rounded-full w-8 md:w-6">

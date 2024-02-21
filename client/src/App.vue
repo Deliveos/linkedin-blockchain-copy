@@ -28,7 +28,8 @@ store.dispatch('posts/fetchPosts')
   <teleport to="body">
     <appNotif class="sm:bottom-2 top-0" v-if="$store.state['notifications'].message" />
   </teleport>
-  <appChatBox />
 </template>
 
-<style ></style>
+<style>
+
+</style>
