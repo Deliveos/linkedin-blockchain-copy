@@ -1,28 +1,36 @@
 <script setup>
-import { computed, reactive, ref } from 'vue';
+import axios from 'axios';
 import { useRouter } from 'vue-router';
-import { useStore } from 'vuex';
+import DataService from './../../../DataService';
 
 const route = useRouter()
-const router = useRouter()
-const store = useStore()
-const userData = reactive({})
 
 const signup = async () => {
-    if (!window.ethereum) return ("U DUMB")
-      try {
-        const addressArray = await window.ethereum.request({
-        //   const addressArray = window.ethereum.request({
-          method: 'eth_requestAccounts',
-        })
-        
-        console.log(addressArray);
+  try {
+    if (!window.ethereum) throw new Error("No Ethereum provider available");
 
-        await route?.push("/name_info")
-      } catch (error) {
-        console.error(error)
-      }
-}
+    const addressArray = await window.ethereum.request({
+      method: 'eth_requestAccounts',
+    });
+
+    const newUser = await DataService.getUser(addressArray[0]);
+
+    if (!newUser) {
+      await route?.push("/name_info");
+      console.log('User not registered, redirecting to registration page');
+    } else {
+      await route?.push("/");
+      console.log('User already registered, redirecting to home page');
+    }
+  } catch (error) {
+    if (error.response && error.response.status === 404) {
+      console.log('User not found, redirecting to registration page');
+      await route?.push("/name_info");
+    } else {
+      console.error('Error during signup:', error.message);
+    }
+  }
+};
 
 </script>
 <template>
@@ -36,10 +44,6 @@ const signup = async () => {
                 <div>
                     <small>Stay up to date with news about your professional world</small>
                 </div>
-                <!-- <router-link to="/forgot-password"
-                    class=" hover:underline mt-6  py-2 text-primary hover:bg-[#d0e8ff] cursor-pointer rounded-full px-2 font-semibold border border-1 border-transparent active:border-primary">your password,
-                    Did you forget?</router-link> -->
-
                 <button @click="signup()"
                     class="bg-primary my-4 w-full rounded-full py-4  text-white active:bg-[#09223b] hover:bg-[#004182] font-bold">
                     Sign in / sign up

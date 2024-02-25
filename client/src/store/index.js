@@ -1,14 +1,6 @@
 import { createStore } from "vuex";
 
-import posts from "./posts";
-
 import users from "./users";
-
-import notifications from "./notifications";
-
-import loader from "./loader";
-
-import userNotifications from "./userNotifications";
 
 export default createStore({
   namespaced: true,
@@ -28,9 +20,5 @@ export default createStore({
   getters: {},
   modules: {
     users,
-    userNotifications,
-    posts,
-    notifications,
-    loader,
   },
 });

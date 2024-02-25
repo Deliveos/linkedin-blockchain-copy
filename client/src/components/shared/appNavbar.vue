@@ -45,26 +45,9 @@ const showSettingsCard = ref(false)
                         <router-link to="/" tag="i"
                             class="fa-brands hidden md:block fa-linkedin text-3xl md:text-5xl text-primary"></router-link>
                         <!-- /Logo -->
-                        <!-- Search Area -->
                       <p @click="logout()" class="px-3 pt-2 text-sm text-start hover:underline text-muted">Sign out</p>
-
-                      <div
-                            class="relative bg-slate-100 px-4 py-1 flex items-center  md:hover:w-[350px] w-[250px] rounded-md text-sm h-10 ">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" data-supported-dps="24x24"
-                                fill="#666667" class="mercado-match absolute left-3 group-hover:fill-black " width="24"
-                                height="24" focusable="false">
-                                <path
-                                    d="M21.41 18.59l-5.27-5.28A6.83 6.83 0 0017 10a7 7 0 10-7 7 6.83 6.83 0 003.31-.86l5.28 5.27a2 2 0 002.82-2.82zM5 10a5 5 0 115 5 5 5 0 01-5-5z">
-                                </path>
-                            </svg>
-                            <input @keypress.enter="search($event)"
-                                class=" bg-slate-100 h-full w-full ml-5 outline-0 placeholder:text-slate-600 "
-                                placeholder="Arama Yap" type="text">
-                        </div>
-                        <!-- /Search Area -->
                     </div>
                     <!-- Nav Items -->
-
                     <ul class="flex justify-between items-center ">
                         <div
                             class="px-2 md:p-0 md:static flex justify-between items-center fixed z-[1] bottom-0 left-0 right-0 border-t-[1px] bg-white sm:border-none border-t-[rgba(0,0,0,0.2)]">

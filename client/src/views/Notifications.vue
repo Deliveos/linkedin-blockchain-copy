@@ -10,7 +10,6 @@ const store = useStore()
 
 const currentUser = computed(() => store.getters['users/getCurrentUser'])
 const notifications = computed(() => store.getters['userNotifications/getNotifications'])
-store.dispatch('userNotifications/fetchUserNotifications')
 </script>
 <template>
     <div class="container mt-16  sm:mt-20">

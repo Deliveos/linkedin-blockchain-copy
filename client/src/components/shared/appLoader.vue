@@ -1,12 +1,9 @@
 <template>
-    <span v-if="loading" class="loader z-20 mx-auto "></span>
+    <span v-if="" class="loader z-20 mx-auto "></span>
 </template>
 <script setup>
 import { computed } from 'vue';
-import { useStore } from 'vuex';
-const store = useStore()
 
-const loading = computed(() => store.getters['loader/loading'])
 </script>
 <style scoped>
 .loader {

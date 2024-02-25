@@ -1,27 +1,5 @@
-<script setup>
-import {computed, reactive, ref} from 'vue';
-import { useStore } from 'vuex';
-import { useRouter } from 'vue-router';
-const router = useRouter()
-const store = useStore()
-
-const name = ref(null)
-const surname = ref(null)
-const full_name = computed(() => {
-   return name.value + ' ' + surname.value
-})
-// const userData = { ...store.state.users.registerData }
-const userData = reactive({})
-
-const setUserName = () => {
-    userData.full_name = full_name
-    store.commit('users/setUserInfo', userData)
-   // router?.push("/signin/location_info")
-}
-</script>
-
 <template>
-   <div class="flex-1 md:w-2/5 mx-auto rounded-md bg-white py-6 px-6 space-y-4">
+   <div class="flex-1 md:w-2/5 mx-auto rounded-md bg-white py-6 px-6 space-y-4" style="margin-top: 200px;">
       <div class="flex flex-col">
          <label for="name" class="text-muted text-sm">Name</label>
          <input v-model="name" type="text" id="name"
@@ -38,39 +16,125 @@ const setUserName = () => {
 
       <div class="flex flex-col">
          <label for="name" class="text-muted text-sm">Country/Region <span class="items-start text-primary">*</span></label>
-         <input v-model="country" type="text" id="name" :class="{ 'ring-red-600 ring-2': (error.location && !country) }"
-            class="mt-1 px-2 py-1 ring-1 ring-muted focus:outline-black rounded-sm" />
-         <small v-if="error.location && !country" class="text-red-600 ">{{ error.location }}</small>
+         <input v-model="country" type="text" id="name"
+               class="mt-1 px-2 py-1 border border-1 border-muted focus:outline-black rounded-sm" />
       </div>
 
       <div class="flex flex-col">
          <label for="name" class="text-muted text-sm">City/District <span class="items-start text-primary">*</span></label>
-         <input v-model="city" type="text" id="name" :class="{ 'ring-red-600 ring-2': (error.location && !city) }"
-            class="mt-1 px-2 py-1 ring-1 ring-muted focus:outline-black rounded-sm" />
-         <small v-if="error.location && !city" class="text-red-600 ">{{ error.location }}</small>
+         <input v-model="city" type="text" id="name"
+               class="mt-1 px-2 py-1 border border-1 border-muted focus:outline-black rounded-sm" />
       </div>
 
       <div class="flex flex-col">
          <label for="name" class="text-muted text-sm">Latest job title <span
                class="items-start text-primary">*</span></label>
-         <input v-model="title" type="text" id="name" :class="{ 'ring-red-600 ring-2': error.title }"
-            class="mt-1 px-2 py-1 ring-1 ring-muted focus:outline-black rounded-sm" />
-         <small v-if="error.title" class="text-red-600 ">{{ error.title }}</small>
+         <input v-model="latest_job_title" type="text" id="name"
+               class="mt-1 px-2 py-1 border border-1 border-muted focus:outline-black rounded-sm" />
       </div>
 
       <div class="flex flex-col">
          <label for="companies" class="text-muted text-sm">Latest company <span
                class="items-start text-primary">*</span></label>
-         <select v-model="company" name="companies" id="companies" :class="{ 'ring-red-600 ring-2': error.title }"
-            class="mt-1 px-2 py-1 ring-1 ring-muted focus:outline-black rounded-sm">
-            <option v-for="company in companies" :key="company._id" :value="company._id">{{ company.name }}</option>
-         </select>
-         <small v-if="error.company" class="text-red-600 ">{{ error.company }}</small>
+         <input v-model="latest_company" type="text" id="name"
+               class="mt-1 px-2 py-1 border border-1 border-muted focus:outline-black rounded-sm" />
       </div>
 
-      <button @click="setUserName"
+      <button @click="setUser()"
          class="bg-primary w-full rounded-full py-3  text-white active:bg-[#09223b] hover:bg-[#004182] font-bold">
          Continue
       </button>
    </div>
 </template>
+
+
+<script>
+import { useRouter } from 'vue-router';
+import router from './../../../router/index.js'
+import DataService from './../../../DataService';
+import axios from 'axios';
+
+export default {
+  data() {
+    return {
+      name: '',
+      surname: '',
+      country: '',
+      city: '',
+      image: '',
+      latest_job_title: '',
+      latest_company: '',
+    };
+  },
+  methods: {
+  /*async setUser() {
+    try {
+      if (!window.ethereum) throw new Error("No Ethereum provider available");
+
+      const addressArray = await window.ethereum.request({
+        method: 'eth_requestAccounts',
+      });
+
+      const user = {
+        address: addressArray[0],
+        name: this.name,
+        surname: this.surname,
+        country: this.country,
+        city: this.city,
+        image: this.image,
+        latest_job_title: this.latest_job_title,
+        latest_company: this.latest_company,
+      };
+
+      await DataService.createUser(user);
+
+      console.log('User data sent successfully');
+      // Redirect the user to the next page after successful registration
+      await router?.push("/");
+    } catch (error) {
+      console.error('Error during user registration:', error.message);
+    }
+  },*/
+
+    async setUser() {
+      try {
+        if (!window.ethereum) throw new Error("No Ethereum provider available");
+
+        const addressArray = await window.ethereum.request({
+          method: 'eth_requestAccounts',
+        });
+
+        const user = {
+          address: addressArray[0],
+          name: this.name,
+          surname: this.surname,
+          country: this.country,
+          city: this.city,
+          image: this.image,
+          latest_job_title: this.latest_job_title,
+          latest_company: this.latest_company,
+        };
+
+        const existingUser = await DataService.getUser(addressArray[0]);
+
+        if (!existingUser) {
+          await DataService.createUser(user);
+          console.log('User data sent successfully');
+          await router.push("/");
+        } else {
+          console.log('User already exists, redirecting to home page');
+          await router.push("/");
+        }
+      } catch (error) {
+        if (error.response) {
+          console.log('redirecting to home page');
+          await router.push("/");
+        } else {
+          console.error('Error during user registration:', error.message);
+
+        }
+      }
+    },
+  }
+};
+</script>

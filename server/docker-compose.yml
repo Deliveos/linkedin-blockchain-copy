@@ -1,0 +1,11 @@
+version: '2'
+services:
+  web:
+    build: .
+    stdin_open: true
+    tty: true
+    ports:
+      - "5173:5173"
+    volumes:
+      - "/client/node_modules"
+      - ".:/client"

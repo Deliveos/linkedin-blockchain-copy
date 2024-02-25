@@ -1,6 +1,5 @@
 import { createRouter, createWebHashHistory } from "vue-router";
 import Home from "../views/Home.vue";
-import store from "../store";
 const routes = [
   {
     path: "/",
@@ -11,12 +10,17 @@ const routes = [
     path: "/signin",
     name: "Signin",
     component: () => import("../views/auth/signin/Signin.vue"),
-    children: [
+    /*children: [
       {
         path: "/name_info",
         component: () => import("../views/auth/signin/SigninNameInfo.vue"),
       },
-    ],
+    ],*/
+  },
+  {
+    path: "/name_info",
+    name: "nameInfo",
+    component: () => import("../views/auth/signin/SigninNameInfo.vue"),
   },
   {
     path: "/user/:slug",
@@ -63,40 +67,6 @@ const routes = [
 const router = createRouter({
   history: createWebHashHistory(),
   routes,
-  scrollBehavior(to, from, savedPosition) {
-    // always scroll to top
-    return { top: 0 };
-  },
-});
-
-router.beforeEach((to, from, next) => {
-  let user,
-    access_token = null;
-  const authenticatedPages = ["Home", "Profile"];
-  // Are there any Users on LocalStorage?
-
-  if (localStorage?.user) {
-    user = JSON.parse(localStorage?.user);
-  }
-  if (localStorage?.access_token) {
-    access_token = localStorage?.access_token;
-  }
-
-  // If there is a User on LocalStorage, update the Store
-  if (user && access_token) {
-    store.commit("users/setUser", user);
-    store.commit("users/setAccessToken", access_token);
-  }
-  // Get isAuthenticated information from Store..
-  const isAuth = store.getters["users/isAuth"];
-
-  // Rules...
-  // If he is not logged in and wants to enter the User-related sections... Block and redirect to the Login page.
-  if (!isAuth && authenticatedPages.indexOf(to.name) > -1) return next({ name: "Signin" });
-
-  if (isAuth && (to.name === "Signin"))  return next({ name: "Home" });
-
-  next();
 });
 
 export default router;
