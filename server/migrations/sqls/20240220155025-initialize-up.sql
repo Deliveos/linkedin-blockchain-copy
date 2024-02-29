@@ -30,13 +30,30 @@ CREATE TABLE IF NOT EXISTS friends (
   FOREIGN KEY (friend_address) REFERENCES users(address)
 );
 
-CREATE TABLE IF NOT EXISTS posts (
+CREATE TABLE IF NOT EXISTS posts(
+    id SERIAL PRIMARY KEY,
+    user_address VARCHAR(255) NOT NULL,
+    title VARCHAR(255) NOT NULL,
+    content TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_address) REFERENCES users("address")
+);
+
+CREATE TABLE IF NOT EXISTS comments (
+    id SERIAL PRIMARY KEY,
+    user_address VARCHAR(255) NOT NULL,
+    post_id INT NOT NULL,
+    content TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_address) REFERENCES users("address"),
+    FOREIGN KEY (post_id) REFERENCES posts(id)
+);
+
+CREATE TABLE IF NOT EXISTS likes (
   id SERIAL PRIMARY KEY,
-  title VARCHAR(255) NOT NULL,
-  content TEXT NOT NULL,
   user_address VARCHAR(255) NOT NULL,
-  is_edited BOOLEAN DEFAULT FALSE,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  post_id INT NOT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (user_address) REFERENCES users(address)
+  FOREIGN KEY (user_address) REFERENCES users("address"),
+  FOREIGN KEY (post_id) REFERENCES posts(id)
 );
