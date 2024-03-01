@@ -27,7 +27,6 @@ const currentRoute = computed(() => {
 
 const unReadIcon = computed(() => store.getters['userNotifications/showIcon'])
 
-
 const hideNavbar = computed(() => {
     return !Boolean(currentRoute.value === '/signin' || route.currentRoute.value.name==='NotFound')
 })
@@ -49,8 +48,7 @@ const showSettingsCard = ref(false)
                     </div>
                     <!-- Nav Items -->
                     <ul class="flex justify-between items-center ">
-                        <div
-                            class="px-2 md:p-0 md:static flex justify-between items-center fixed z-[1] bottom-0 left-0 right-0 border-t-[1px] bg-white sm:border-none border-t-[rgba(0,0,0,0.2)]">
+                        <div class="px-2 md:p-0 md:static flex justify-between items-center fixed z-[1] bottom-0 left-0 right-0 border-t-[1px] bg-white sm:border-none border-t-[rgba(0,0,0,0.2)]">
                             <li class="text-muted">
                                 <router-link tag="li"
                                     class="flex flex-col hover:text-black justify-start items-center text-center hover:cursor-pointer group border-0  w-12 md:w-20"
@@ -70,8 +68,9 @@ const showSettingsCard = ref(false)
                                     </svg><small class="">Home page</small>
                                 </router-link>
                             </li>
-                            <li
-                                class="flex flex-col justify-start items-center text-center group  hover:cursor-pointer w-12 md:w-20 ">
+
+                            <li>
+                              <router-link to="/friends" class="flex flex-col justify-start items-center text-center group  hover:cursor-pointer w-12 md:w-20 ">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" data-supported-dps="24x24"
                                     fill="#666667" class="mercado-match group-hover:fill-black" width="24" height="24"
                                     focusable="false">
@@ -79,36 +78,10 @@ const showSettingsCard = ref(false)
                                         d="M12 16v6H3v-6a3 3 0 013-3h3a3 3 0 013 3zm5.5-3A3.5 3.5 0 1014 9.5a3.5 3.5 0 003.5 3.5zm1 2h-2a2.5 2.5 0 00-2.5 2.5V22h7v-4.5a2.5 2.5 0 00-2.5-2.5zM7.5 2A4.5 4.5 0 1012 6.5 4.49 4.49 0 007.5 2z">
                                     </path>
                                 </svg><small class="text-muted group-hover:text-black">my network</small>
+                              </router-link>
                             </li>
-                            <li
-                                class="flex sm:hidden flex-col justify-start items-center text-center group  hover:cursor-pointer w-12 md:w-20 ">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" data-supported-dps="24x24"
-                                    fill="currentColor" class="mercado-match" width="24" height="24" focusable="false">
-                                    <path d="M21 13h-8v8h-2v-8H3v-2h8V3h2v8h8z"></path>
-                                </svg>
-                                <small class="text-muted group-hover:text-black">Send</small>
-                            </li>
-                            <router-link to="/notifications"
-                                active-class="lg:border-b-2 border-t md:border-t-0 md:border-b text-black border-black"
-                                class="relative md:hidden flex flex-col justify-start items-center text-center hover:cursor-pointer group w-12 md:w-20 ">
-                                <span v-if="unReadIcon"
-                                    class="p-[5px]  absolute top-1 right-3 bg-red-600 rounded-full"></span>
-                                <svg v-if="currentRoute.includes('notifications')" xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 24 24" data-supported-dps="24x24" fill="currentColor" class="mercado-match"
-                                    width="24" height="24" focusable="false">
-                                    <path
-                                        d="M22 19.24a3.46 3.46 0 01-.09.78l-.22 1-6.76-1.51A2.16 2.16 0 0115 20a2 2 0 11-3.53-1.28L2 16.62l.22-1A4.45 4.45 0 014 13.12l1.22-.93 15.46 3.44.7 1.36a5 5 0 01.62 2.25zm-1.49-10.4a6.29 6.29 0 00-4.92-6.69A6.76 6.76 0 0014.18 2a6.29 6.29 0 00-5.9 4.12l-2 5.27 13.8 3.08z">
-                                    </path>
-                                </svg>
-                                <svg v-else xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                                    data-supported-dps="24x24" fill="#666667" class="mercado-match group-hover:fill-black"
-                                    width="24" height="24" focusable="false">
-                                    <path
-                                        d="M22 19h-8.28a2 2 0 11-3.44 0H2v-1a4.52 4.52 0 011.17-2.83l1-1.17h15.7l1 1.17A4.42 4.42 0 0122 18zM18.21 7.44A6.27 6.27 0 0012 2a6.27 6.27 0 00-6.21 5.44L5 13h14z">
-                                    </path>
-                                </svg>
-                                <small class="text-muted  group-hover:text-black">Notifications</small>
-                            </router-link>
+
+
                             <li class="text-muted">
                                 <router-link tag="li"
                                     class="flex no-wrap flex-col hover:text-black justify-start items-center text-center hover:cursor-pointer group border-0  w-12 md:w-20"
@@ -134,7 +107,6 @@ const showSettingsCard = ref(false)
                                 </router-link>
                             </li>
                         </div>
-
 
                         <li
                             class="absolute right-px md:static flex flex-col justify-start items-center text-center hover:cursor-pointer group  w-12 md:w-20">

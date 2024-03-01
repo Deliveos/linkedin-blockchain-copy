@@ -1,14 +1,15 @@
 <script setup>
 import DataService from './../DataService.js';
 import {onMounted, ref} from 'vue';
+import { getFriendsData } from './../FriendService';
 
-const name = ref(''); // Используем ref для создания реактивной переменной
-const surname = ref(''); // Используем ref для создания реактивной переменной
-const country = ref(''); // Используем ref для создания реактивной переменной
-const city = ref(''); // Используем ref для создания реактивной переменной
-const image = ref(''); // Используем ref для создания реактивной переменной
-const latest_job_title = ref(''); // Используем ref для создания реактивной переменной
-const latest_company = ref(''); // Используем ref для создания реактивной переменной
+const name = ref('');
+const surname = ref('');
+const country = ref('');
+const city = ref('');
+const image = ref('');
+const latest_job_title = ref('');
+const latest_company = ref('');
 
 const fetchUserData = async () => {
   try {
@@ -27,6 +28,7 @@ const fetchUserData = async () => {
     latest_company.value = user.latest_company;
 
     console.log(user);
+
     const friends = await DataService.getFriends(addressArray[0]);
 
     const friendsContainer = document.querySelector('.friends');

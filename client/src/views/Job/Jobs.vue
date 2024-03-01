@@ -2,7 +2,6 @@
 import { BASE_URL } from '../../constants';
 import { computed, ref, watch } from 'vue';
 import { useStore } from 'vuex';
-import AddJobModal from '../../components/Job/AddJobModal.vue'
 //jobs file updated
 import appAxios from '../../utils/appAxios';
 import Job from '../../components/Job/Job.vue';
@@ -71,8 +70,6 @@ watch(
 </script>
 <template>
     <div class="container mt-16  sm:mt-20">
-        <AddJobModal @add-job="addJob($event)" v-if="$store.state.modal === 'add-job-modal'"
-            @close-job-modal="$store.dispatch('setModal', null)" />
         <div class="flex flex-col md:flex-row  justify-between pb-52 items-center md:items-start md:space-x-5 ">
             <div class="flex flex-col md:sticky top-px w-full px-2 md:px-0 md:basis-1/4 space-y-2  ">
                 <div class=" border bg-white rounded-lg">

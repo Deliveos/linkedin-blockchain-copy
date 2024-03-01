@@ -230,11 +230,6 @@ const profile_image = computed(() => {
 
             </div>
             <ProfileRightSide />
-
         </div>
-
-
-
-
     </div>
 </template>

@@ -65,36 +65,24 @@
             </div>
         </div>
 
-        <!-- Right Side links -->
         <div class="border bg-white py-[0.50px] mt-2 mb-4 rounded-full"></div>
         <div class="px-8">
             <ul class="text-xs text-muted space-y-2">
                 <div class="flex justify-between items-center">
                     <li class="hover:text-primary hover:underline"><a href="#"> About</a></li>
-                    <li class="hover:text-primary hover:underline"><a href="#"> accessibility</a></li>
+                    <li class="hover:text-primary hover:underline"><a href="#"> Accessibility</a></li>
                     <li class="hover:text-primary hover:underline"><a href="#"> Help center</a></li>
                 </div>
 
                 <div class="flex justify-between items-center space-x-2">
                     <li class="hover:text-primary hover:underline flex justify-between items-center">
-                        <a href="#"> Gizlilik ve Koşullar</a> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"
+                        <a href="#">Privacy and Terms</a> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"
                             data-supported-dps="16x16" fill="currentColor" class="mercado-match" width="16" height="16"
                             focusable="false">
                             <path d="M8 11L3 6h10z" fill-rule="evenodd"></path>
                         </svg>
                     </li>
                     <li class="hover:text-primary hover:underline"><a href="#"> Ad Preferences</a></li>
-                </div>
-
-                <div class="flex justify-center items-center space-x-2">
-                    <li class="hover:text-primary hover:underline"><a href="#"> Advert</a></li>
-                    <li class="hover:text-primary hover:underline flex justify-between items-center">
-                        <a href="#"> Gizlilik ve Koşullar</a> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"
-                            data-supported-dps="16x16" fill="currentColor" class="mercado-match" width="16" height="16"
-                            focusable="false">
-                            <path d="M8 11L3 6h10z" fill-rule="evenodd"></path>
-                        </svg>
-                    </li>
                 </div>
                 <div class="flex justify-between items-center">
                     <li class="hover:text-primary hover:underline"><a href="#"> Install LinkedIn app</a></li>
@@ -103,6 +91,7 @@
             </ul>
 
         </div>
-        <!-- /Right Side links -->
     </div>
 </template>
+<script setup>
+</script>

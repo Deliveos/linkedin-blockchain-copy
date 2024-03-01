@@ -7,7 +7,7 @@ const props = defineProps({
     }
 })
 const work_type = computed(() => {
-    if (props.job.work_type === 'office') return 'İş yerinde'
+    if (props.job.work_type === 'office') return 'At the workplace'
     if (props.job.work_type === 'remote') return 'Uzaktan'
     if (props.job.work_type === 'hybrid') return 'Hybrid'
 })
@@ -15,7 +15,6 @@ const { created_at } = moment(props.job.created_at)
 </script>
 <template>
     <li class="font-semibold">
-
         <div class="flex relative justify-between items-start border-b">
             <div class="flex  sm:justify-between  items-start  sm:space-x-4 space-x-4 p-4 pb-2 ">
                 <img :src="job.company.media" alt="" class="object-contain  w-14 h-14 rounded-full ">

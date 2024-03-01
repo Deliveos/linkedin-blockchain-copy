@@ -69,7 +69,7 @@ export default {
         return await axios.get(`${API_URL}/friends/${address}`);
     },
     async deleteFriends(address, body){
-        return await axios.delete(`${API_URL}/friends/${address}`, body);
+        return await axios.delete(`${API_URL}/friends/${address}`, {data: body});
     },
 
 };

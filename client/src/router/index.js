@@ -23,6 +23,16 @@ const routes = [
     component: () => import("../views/auth/signin/SigninNameInfo.vue"),
   },
   {
+    path: "/friends",
+    name: "Friends",
+    component: () => import("../views/friends/Friends.vue"),
+  },
+  {
+    path: "/friend_requests",
+    name: "FriendRequests",
+    component: () => import("../views/friends/FriendRequests.vue"),
+  },
+  {
     path: "/user/:slug",
     name: "User",
     component: () => import("../views/user/User.vue"),
