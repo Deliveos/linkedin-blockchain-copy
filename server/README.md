@@ -8,6 +8,7 @@ npm install
 npm install -g db-migrate
 npm install -g db-migrate-pg
 npx db-migrate up initialize
+npx db-migrate up posts
 ```
 # How to run
 ```sh

@@ -27,7 +27,9 @@ const swaggerOptions = {
     apis: [
         './routes/users.routes.js',
         './routes/friendsRequests.routes.js',
-        './routes/friends.routes.js'
+        './routes/friends.routes.js',
+        './routes/nft.routes.js',
+        './routes/posts.routes.js'
     ]
 };
 
@@ -42,6 +44,8 @@ app.get('/', (_, res) => {
 app.use('/users', require('./routes/users.routes'));
 app.use('/friends-requests', require('./routes/friendsRequests.routes'));
 app.use('/friends', require('./routes/friends.routes'));
+app.use('/nft', require('./routes/nft.routes.js'));
+app.use('/posts', require('./routes/posts.routes.js'));
 
 // Start the server
 app.listen(PORT, () => {

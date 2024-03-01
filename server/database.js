@@ -94,11 +94,90 @@ const getFriends = async (request, response) => {
 const deleteFriend = async (request, response) => {
   const address = request.params.address
   const { friend_address } = request.body
+  console.log('DELETE FROM friends WHERE user_address = $1 AND friend_address = $2', [address, friend_address]);
+  console.log('DELETE FROM friends WHERE user_address = $1 AND friend_address = $2', [friend_address, address]);
   await pool.query('DELETE FROM friends WHERE user_address = $1 AND friend_address = $2', [address, friend_address])
   await pool.query('DELETE FROM friends WHERE user_address = $1 AND friend_address = $2', [friend_address, address])
   await pool.query('DELETE FROM friends_requests WHERE sender_address = $1 OR receiver_address = $1 AND sender_address = $2 OR receiver_address = $2', [address, friend_address])
   console.log('DELETE FROM friends_requests WHERE sender_address = $1 OR receiver_address = $1 AND sender_address = $2 OR receiver_address = $2', [address, friend_address])
   return response.status(200).json({message: 'Friend deleted'});
+}
+
+const getPosts = async (request, response) => {
+  const results = await pool.query('SELECT * FROM posts');
+  response.status(200).json(results.rows);
+}
+
+const getPostsByAddress = async (request, response) => {
+  const address = request.params.address
+  const results = await pool.query('SELECT * FROM posts WHERE user_address=$1', [address]);
+  response.status(200).json(results.rows);
+}
+
+
+const createPost = async (request, response) => {
+  const post = request.body;
+  const res = await pool.query('INSERT INTO posts(user_address, title, content) VALUES ($1, $2, $3) RETURNING *', [post.userAddress, post.title, post.content]);
+  return response.status(201).json(res.rows[0]);
+}
+
+const updatePost = async (request, response) => {
+  const id = request.params.id
+  const post = request.body;
+  const res = await pool.query('UPDATE posts SET title=$1, content=$2 WHERE id=$3', [post.title, post.content, id]);
+  return response.json(res.rows[0]);
+}
+
+const deletePost = async (request, response) => {
+  const id = request.params.id
+  const res = await pool.query('DELETE FROM posts WHERE id=$1', [id]);
+  return response.json(res.rows[0]);
+}
+
+const addComment = async (request, response) => {
+  const id = request.params.id;
+  const comment = request.body;
+  const res = await pool.query('INSERT INTO comments(post_id, user_address, content) VALUES ($1, $2, $3) RETURNING *', [id, comment.userAddress, comment.content])
+  return response.json(res.rows[0]);
+}
+
+const getComments = async (request, response) => {
+  const id = request.params.id;
+  const res = await pool.query('SELECT * FROM comments WHERE post_id=$1', [id]);
+  return response.json(res.rows);
+}
+
+const updateComment = async (request, response) => {
+  const id = request.params.id;
+  const content = request.body;
+  const res = await pool.query('UPDATE comments SET content=$2 WHERE id=$1 RETURNING *', [id, content.content]);
+  return response.json(res.rows[0]);
+}
+
+const deleteComment = async (request, response) => {
+  const id = request.params.id;
+  const res = await pool.query('DELETE FROM comments WHERE id=$1 RETURNING *', [id]);
+  return response.json(res.rows[0]);
+}
+
+const addLike = async (request, response) => {
+  const id = request.params.id;
+  const like = request.body;
+  const res = await pool.query('INSERT INTO likes(post_id, user_address) VALUES ($1, $2) RETURNING *', [id, like.userAddress])
+  return response.json(res.rows[0]);
+}
+
+const getLikes = async (request, response) => {
+  const id = request.params.id;
+  const res = await pool.query('SELECT * FROM likes WHERE post_id=$1', [id]);
+  return response.json(res.rows);
+}
+
+const deleteLike = async (request, response) => {
+  const id = request.params.id;
+  const like = request.body;
+  const res = await pool.query('DELETE FROM likes WHERE post_id=$1 AND user_address=$2', [id, like.userAddress]);
+  return response.json(res.rows[0]);
 }
 
 module.exports = {
@@ -112,5 +191,17 @@ module.exports = {
     getFriendsRequests,
     updateFriendRequest,
     getFriends,
-    deleteFriend
+    deleteFriend,
+    getPosts,
+    getPostsByAddress,
+    createPost,
+    updatePost,
+    deletePost,
+    addComment,
+    getComments,
+    updateComment,
+    deleteComment,
+    addLike,
+    deleteLike,
+    getLikes
 };
