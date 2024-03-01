@@ -72,4 +72,118 @@ export default {
         return await axios.delete(`${API_URL}/friends/${address}`, {data: body});
     },
 
+// POSTS
+
+    async createPost(body) {
+        try {
+            const response = await axios.post(`${API_URL}/posts`, body);
+            return response.data;
+        } catch (error) {
+            console.error("Error occurred while creating user:", error);
+            throw error;
+        }
+    },
+
+    async updatePost(id) {
+        try {
+            const response = await axios.put(`${API_URL}/posts/${id}`);
+            return response.data;
+        } catch (error) {
+            console.error("Error occurred while creating user:", error);
+            throw error;
+        }
+    },
+
+    async deletePost(id) {
+        try {
+            const response = await axios.delete(`${API_URL}/posts/${id}`);
+            return response.data;
+        } catch (error) {
+            console.error("Error occurred while creating user:", error);
+            throw error;
+        }
+    },
+
+    async getAllPosts() {
+        try {
+            const response = await axios.get(`${API_URL}/posts`);
+            return response.data;
+        } catch (error) {
+            console.error("Error occurred while creating user:", error);
+            throw error;
+        }
+    },
+
+    async addPostComment(id, body) {
+        try {
+            const response = await axios.post(`${API_URL}/posts/${id}/comments`, body);
+            return response.data;
+        } catch (error) {
+            console.error("Error occurred while creating user:", error);
+            throw error;
+        }
+    },
+
+    async getPostComment(id) {
+        try {
+            const response = await axios.get(`${API_URL}/posts/${id}/comments`);
+            return response.data;
+        } catch (error) {
+            console.error("Error occurred while creating user:", error);
+            throw error;
+        }
+    },
+
+    async deletePostComment(id) {
+        try {
+            const response = await axios.delete(`${API_URL}/posts/comments/${id}`);
+            return response.data;
+        } catch (error) {
+            console.error("Error occurred while creating user:", error);
+            throw error;
+        }
+    },
+
+/* NFT */
+
+    async createNFTmint(body) {
+        try {
+            const response = await axios.post(`${API_URL}/nft/mint`, body);
+            return response.data;
+        } catch (error) {
+            console.error("Error occurred while creating user:", error);
+            throw error;
+        }
+    },
+    async createNFTburn(body) {
+        try {
+            const response = await axios.post(`${API_URL}/nft/mint`, body);
+            return response.data;
+        } catch (error) {
+            console.error("Error occurred while creating user:", error);
+            throw error;
+        }
+    },
+
+    async balanceNFT(address) {
+        try {
+            const response = await axios.post(`${API_URL}/nft/balance/${address}`);
+            return response.data;
+        } catch (error) {
+            console.error("Error occurred while creating user:", error);
+            throw error;
+        }
+    },
+    async getNFTtoken(address) {
+        try {
+            const response = await axios.post(`${API_URL}/nft/get-tokens/${address}`);
+            return response.data;
+        } catch (error) {
+            console.error("Error occurred while creating user:", error);
+            throw error;
+        }
+    },
+/* NFT */
+
+
 };

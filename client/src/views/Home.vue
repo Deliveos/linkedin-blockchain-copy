@@ -1,7 +1,6 @@
 <script setup>
 import DataService from './../DataService.js';
 import {onMounted, ref} from 'vue';
-import { getFriendsData } from './../FriendService';
 
 const name = ref('');
 const surname = ref('');
@@ -10,6 +9,9 @@ const city = ref('');
 const image = ref('');
 const latest_job_title = ref('');
 const latest_company = ref('');
+const posts = ref([]);
+const newCommentText = ref('');
+const comments = ref({});
 
 const fetchUserData = async () => {
   try {
@@ -44,9 +46,60 @@ const fetchUserData = async () => {
     console.error(error);
   }
 }
+const fetchPosts = async () => {
+  try {
+    posts.value = await DataService.getAllPosts();
+
+    posts.value.forEach(comment => {
+      const ID = comment.id;
+      console.log(ID)
+    })
+
+  } catch (error) {
+    console.error("Error fetching posts:", error);
+  }
+};
+
+async function fetchComments(postId) {
+  try {
+    const response = await DataService.getPostComment(postId);
+    console.log(response);
+    const postIndex = posts.value.findIndex(post => post.id === postId);
+    if(postIndex !== -1) {
+      posts.value[postIndex].comments = response;
+    }
+  } catch (error) {
+    console.error("Error fetching comments:", error);
+  }
+}
+
+async function addComment(postId) {
+  if (newCommentText.value.trim() === '') return;
+  if (!window.ethereum) throw new Error("No Ethereum provider available");
+  const addressArray = await window.ethereum.request({
+    method: 'eth_requestAccounts',
+  });
+
+  try {
+    await DataService.addPostComment(postId, { userAddress: addressArray[0], content: newCommentText.value });
+    newCommentText.value = '';
+    await fetchComments(postId);
+  } catch (error) {
+    console.error("Error adding comment:", error);
+  }
+}
+
+async function deleteComment(commentId, postId) {
+  try {
+    await DataService.deletePostComment(commentId);
+    await fetchComments(postId);
+  } catch (error) {
+    console.error("Error deleting comment:", error);
+  }
+}
 
 onMounted(fetchUserData);
-
+onMounted(fetchPosts);
 </script>
 
 <template>
@@ -64,7 +117,21 @@ onMounted(fetchUserData);
         </h3>
       </div>
       <div class="long_card">
-          ПОСТЫ
+        <h1>ПОСТЫ</h1>
+          <div v-for="post in posts" :key="post.id" class="post">
+            <h3 style="padding:10px 0; font-weight: bold; font-size: 22px">{{ post.title }}</h3>
+            <p>{{ post.content }}</p>
+            <br>
+            <hr>
+            <hr>
+            <hr>
+            <div v-for="comment in post.comments" :key="comment.id">
+              <p>{{ comment.content }}</p>
+              <button @click="deleteComment(comment.id, post.id)">Удалить комментарий</button>
+            </div>
+            <input v-model="newCommentText" placeholder="Добавить комментарий">
+            <button @click="() => addComment(post.id)">Добавить</button>
+          </div>
       </div>
       <div class="inner_card">
         <div
@@ -89,6 +156,27 @@ onMounted(fetchUserData);
 </template>
 
 <style scoped >
+
+.post {
+  /*margin-top: 30px;
+  width: 100%;
+  height: 200px;
+  padding: 40px;
+  background: #f9f9f9;
+  border-radius: 15px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);*/
+
+  margin-top: 30px;
+  min-width: 100%;
+  min-height: 300px;
+  padding: 40px;
+  background: #f9f9f9;
+  border-radius: 15px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+
+  display: flex;
+  flex-direction: column;
+}
 
 .friends{
   display: flex;
@@ -144,6 +232,7 @@ onMounted(fetchUserData);
   height: 300px;
   border-radius: 30px;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 }

@@ -18,10 +18,34 @@ const fetchUserData = async () => {
     originalFriendsList.value = friends.data;
     displayFriends(friends.data, addressArray[0]);
 
+    await manageNFTBasedOnFriendsCount(addressArray[0], friends.data.length);
+
   } catch (error) {
     console.error(error);
   }
 }
+
+const manageNFTBasedOnFriendsCount = async (address, friendCount) => {
+  try {
+    const nftBalance = await DataService.balanceNFT(address);
+    const hasNFT = nftBalance > 0;
+
+    if (friendCount >= 5 && !hasNFT) {
+      await DataService.createNFTmint({ address });
+      console.log('NFT minted successfully!');
+    } else if (friendCount < 5 && hasNFT) {
+      await DataService.createNFTburn({ address });
+      console.log('NFT burned successfully.');
+    }
+  } catch (error) {
+    console.error('Error managing NFT based on friends count:', error);
+  }
+};
+
+
+
+
+
 const deleteFriendRequest = async (main_address, friend) => {
   console.log(friend)
   const requestBody = {
@@ -189,21 +213,13 @@ onMounted(fetchUserData);
                 </button>
             </div>
 
-          <div class="w-full mt-4 md:mt-0 md:basis-2/3  flex flex-col space-y-2">
+          <div class="w-full mt-4 md:mt-0 md:basis-2/3 flex flex-col space-y-2">
                 <div class="border bg-white p-4 rounded-lg">
                     <div class="flex justify-between items-center">
                         <p class="text-xl font-semibold">Friends search</p>
-                        <span class="p-2 hover:bg-gray-200 cursor-pointer rounded-full">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" data-supported-dps="24x24"
-                                fill="currentColor" class="mercado-match" width="24" height="24" focusable="false">
-                                <path
-                                    d="M13.42 12L20 18.58 18.58 20 12 13.42 5.42 20 4 18.58 10.58 12 4 5.42 5.42 4 12 10.58 18.58 4 20 5.42z">
-                                </path>
-                            </svg>
-                        </span>
+
                     </div>
-                  <div
-                      class="relative bg-slate-100 px-4 py-1 flex items-center  md:hover:w-[300px] w-[250px] rounded-md text-sm h-10 ">
+                  <div class="relative bg-slate-100 px-4 py-5 flex items-center  md:hover:w-[300px] w-[250px] rounded-md text-sm h-10 ">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" data-supported-dps="24x24"
                          fill="#666667" class="mercado-match absolute left-3 group-hover:fill-black " width="24"
                          height="24" focusable="false">
@@ -216,6 +232,9 @@ onMounted(fetchUserData);
                            class="bg-slate-100 h-full w-full ml-5 outline-0 placeholder:text-slate-600"
                            placeholder="Поиск Товарища" type="text">
                   </div>
+                  <span class=" hover:bg-gray-200 cursor-pointer rounded-full">
+                            Add at least 5 friends to get premium!
+                  </span>
                 </div>
                 <div class="border bg-white pt-4  rounded-lg">
                     <p class="text-xl font-semibold px-4">Your friends</p>
